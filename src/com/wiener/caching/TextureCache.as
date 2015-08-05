@@ -35,7 +35,7 @@ package com.wiener.caching
 		{
 			_cacheHits = 0;
 			_numRequests = 0;
-			_maxCachedItems = 10;
+			_maxCachedItems = 50;
 
 			_loaderContext = new LoaderContext();
 			_loaderContext.imageDecodingPolicy = ImageDecodingPolicy.ON_LOAD;
@@ -171,7 +171,7 @@ package com.wiener.caching
 
 			if (_lruList.length > _maxCachedItems)
 			{
-				//clearAll();
+				clearAll();
 			}
 
 		}
@@ -193,6 +193,11 @@ package com.wiener.caching
 
 		private function clearItem(cacheData:CacheData):void
 		{
+			if (cacheData.getTextureUsers().length > 0)
+			{
+				return;
+			}
+
 			if (cacheData.loader)
 			{
 				cacheData.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onLoadingComplete);
@@ -218,11 +223,6 @@ package com.wiener.caching
 
 		private function finishClear(cacheData:CacheData):void
 		{
-			if (cacheData.getTextureUsers().length > 0)
-			{
-				return;
-			}
-
 			if (cacheData.texture)
 			{
 				cacheData.texture.dispose();

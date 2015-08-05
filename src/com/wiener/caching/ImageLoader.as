@@ -57,7 +57,6 @@ package com.wiener.caching
 				_image.height = _height;
 
 				addChild(_image);
-				//_textureCache.addCacheHandle(_url, this);
 			}
 		}
 
